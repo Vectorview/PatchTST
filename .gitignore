@@ -2,9 +2,9 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=emacs,jetbrains+all,jupyternotebooks,linux,macos,microsoftoffice,notepadpp,python,tortoisegit,vim,visualstudiocode,windows
 
 checkpoints/
-result.txt
 test_results/
 logs/
+result.txt
 
 
 ### Emacs ###
