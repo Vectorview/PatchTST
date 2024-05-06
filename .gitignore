@@ -4,6 +4,7 @@
 checkpoints/
 test_results/
 logs/
+results/
 result.txt
 
 
