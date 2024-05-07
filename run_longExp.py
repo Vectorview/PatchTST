@@ -33,6 +33,8 @@ if __name__ == '__main__':
     parser.add_argument('--label_len', type=int, default=48, help='start token length')
     parser.add_argument('--pred_len', type=int, default=96, help='prediction sequence length')
 
+    # SparseTSF
+    parser.add_argument('--period_len', type=int, default=24, help='period length')
 
     # DLinear
     #parser.add_argument('--individual', action='store_true', default=False, help='DLinear: a linear layer for each variate(channel) individually')
@@ -117,23 +119,25 @@ if __name__ == '__main__':
     if args.is_training:
         for ii in range(args.itr):
             # setting record of experiments
-            setting = '{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_dt{}_{}_{}'.format(
-                args.model_id,
-                args.model,
-                args.data,
-                args.features,
-                args.seq_len,
-                args.label_len,
-                args.pred_len,
-                args.d_model,
-                args.n_heads,
-                args.e_layers,
-                args.d_layers,
-                args.d_ff,
-                args.factor,
-                args.embed,
-                args.distil,
-                args.des,ii)
+            # setting = '{}_{}_{}_ft{}_sl{}_ll{}_pl{}_dm{}_nh{}_el{}_dl{}_df{}_fc{}_eb{}_dt{}_{}_{}'.format(
+            #     args.model_id,
+            #     args.model,
+            #     args.data,
+            #     args.features,
+            #     args.seq_len,
+            #     args.label_len,
+            #     args.pred_len,
+            #     args.d_model,
+            #     args.n_heads,
+            #     args.e_layers,
+            #     args.d_layers,
+            #     args.d_ff,
+            #     args.factor,
+            #     args.embed,
+            #     args.distil,
+            #     args.des,ii)
+            setting = f"{args.model}_period_{args.period_len}_epoch{args.train_epochs}_lr{args.learning_rate}_bs{args.batch_size}_itr{args.itr}_stride{args.stride}_plen{args.patch_len}_hdo{args.head_dropout}_do{args.dropout}_dff{args.d_ff}_dm{args.d_model}_heads{args.n_heads}_elay{args.e_layers}_enc{args.enc_in}"
+
 
             exp = Exp(args)  # set experiments
             print('>>>>>>>start training : {}>>>>>>>>>>>>>>>>>>>>>>>>>>'.format(setting))

@@ -38,7 +38,6 @@ class Dataset_VVTest(Dataset):
         self.root_path = root_path
         self.data_path = data_path
         self.__read_data__()
-        print(self.data_x)
 
     def __read_data__(self):
         self.scaler = StandardScaler()
