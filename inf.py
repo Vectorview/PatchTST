@@ -1,0 +1,2 @@
+ckpt = "./checkpoints/96_96_PatchTST_ETTh1_ftM_sl96_ll12_pl96_dm16_nh4_el3_dl1_df128_fc1_ebtimeF_dtTrue_Exp_0/checkpoint.pth"
+
