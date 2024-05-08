@@ -7,9 +7,9 @@ if [ ! -d "./logs/LongForecasting" ]; then
 fi
 seq_len=96
 pred_len=96
-label_len=48
+label_len=12
 
-model_name=PatchTST
+model_name=NewModel
 
 root_path_name=./dataset/
 data_path_name=ETTh1.csv
@@ -28,23 +28,35 @@ random_seed=2021
 #  0.3411906
 
 
+# NewModel_period_12_epoch15_lr0.02_bs128_itr1_stride16_plen48_hdo0.1_do0.1_dff128_dm16_heads4_elay3_enc7
+#  0.37132364
+#  NewModel_period_12_epoch15_lr0.05_bs128_itr1_stride16_plen24_hdo0.1_do0.1_dff128_dm32_heads4_elay3_enc7
+#  0.37059333
+#  NewModel_period_6_epoch15_lr0.08_bs128_itr1_stride16_plen24_hdo0.1_do0.1_dff128_dm32_heads4_elay3_enc7
+#  0.36746519
+#  NewModel_period_4_epoch15_lr0.1_bs128_itr1_stride16_plen24_hdo0.1_do0.3_dff128_dm32_heads4_elay3_enc7
+#  0.36366724
+#  NewModel_period_4_epoch25_lr0.12_bs128_itr1_stride16_plen24_hdo0.1_do0.1_dff128_dm32_heads4_elay3_enc7
+#  0.35877394
 
 
-for train_epochs in 15; do
-  for learning_rate in 0.02; do
-    for batch_size in 64; do
+
+
+for train_epochs in 25; do
+  for learning_rate in 0.12; do
+    for batch_size in 128; do
       for itr in 1; do
-        for stride in 8; do
+        for stride in 16; do
           for patch_len in 24; do
             for head_dropout in 0.1; do
               for fc_dropout in 0.1; do
                 for dropout in 0.1; do
-                  for d_ff in 64; do
-                    for d_model in 16; do
+                  for d_ff in 128; do
+                    for d_model in 32; do
                       for n_heads in 4; do
                         for e_layers in 3; do
                           for enc_in in 7; do
-                            for period_len in 12; do
+                            for period_len in 4; do
                               python -u run_longExp.py \
                                 --random_seed $random_seed \
                                 --is_training 1 \
@@ -69,6 +81,7 @@ for train_epochs in 15; do
                                 --des 'Exp' \
                                 --train_epochs $train_epochs \
                                 --period_len $period_len \
+                                --patience 5 \
                                 --itr $itr --batch_size $batch_size --learning_rate $learning_rate
                             done
                           done
