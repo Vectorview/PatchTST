@@ -9,7 +9,7 @@ seq_len=96
 pred_len=96
 label_len=12
 
-model_name=NewModel
+model_name=PatchTST
 
 root_path_name=./dataset/
 data_path_name=ETTh1.csv
@@ -39,50 +39,55 @@ random_seed=2021
 #  NewModel_period_4_epoch25_lr0.12_bs128_itr1_stride16_plen24_hdo0.1_do0.1_dff128_dm32_heads4_elay3_enc7
 #  0.35877394
 
+# NewSegRNN_period_4_epoch15_lr0.001_bs128_itr1_stride16_plen24_hdo0.1_do0.5_dff128_dm128_heads4_elay3_enc7
+#  0.36094161
 
 
 
-for train_epochs in 25; do
-  for learning_rate in 0.12; do
+for train_epochs in 3; do
+  for learning_rate in 0.001; do
     for batch_size in 128; do
       for itr in 1; do
         for stride in 16; do
           for patch_len in 24; do
             for head_dropout in 0.1; do
               for fc_dropout in 0.1; do
-                for dropout in 0.1; do
+                for dropout in 0.3; do
                   for d_ff in 128; do
-                    for d_model in 32; do
+                    for d_model in 128; do
                       for n_heads in 4; do
                         for e_layers in 3; do
                           for enc_in in 7; do
                             for period_len in 4; do
-                              python -u run_longExp.py \
-                                --random_seed $random_seed \
-                                --is_training 1 \
-                                --root_path $root_path_name \
-                                --data_path $data_path_name \
-                                --model_id $model_id_name_$seq_len'_'$pred_len \
-                                --model $model_name \
-                                --data $data_name \
-                                --features M \
-                                --seq_len $seq_len \
-                                --pred_len $pred_len \
-                                --enc_in $enc_in \
-                                --e_layers $e_layers \
-                                --n_heads $n_heads \
-                                --d_model $d_model \
-                                --d_ff $d_ff \
-                                --dropout $dropout \
-                                --fc_dropout $fc_dropout \
-                                --head_dropout $head_dropout \
-                                --patch_len $patch_len \
-                                --stride $stride \
-                                --des 'Exp' \
-                                --train_epochs $train_epochs \
-                                --period_len $period_len \
-                                --patience 5 \
-                                --itr $itr --batch_size $batch_size --learning_rate $learning_rate
+                              for seg_len in 48; do
+                                python -u run_longExp.py \
+                                  --random_seed $random_seed \
+                                  --is_training 1 \
+                                  --root_path $root_path_name \
+                                  --data_path $data_path_name \
+                                  --model_id $model_id_name_$seq_len'_'$pred_len \
+                                  --model $model_name \
+                                  --data $data_name \
+                                  --features M \
+                                  --seq_len $seq_len \
+                                  --pred_len $pred_len \
+                                  --enc_in $enc_in \
+                                  --e_layers $e_layers \
+                                  --n_heads $n_heads \
+                                  --d_model $d_model \
+                                  --d_ff $d_ff \
+                                  --dropout $dropout \
+                                  --fc_dropout $fc_dropout \
+                                  --head_dropout $head_dropout \
+                                  --patch_len $patch_len \
+                                  --stride $stride \
+                                  --des 'Exp' \
+                                  --train_epochs $train_epochs \
+                                  --period_len $period_len \
+                                  --patience 10 \
+                                  --seg_len $seg_len \
+                                  --itr $itr --batch_size $batch_size --learning_rate $learning_rate
+                              done
                             done
                           done
                         done

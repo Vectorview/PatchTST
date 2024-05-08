@@ -1,6 +1,6 @@
 from data_provider.data_factory import data_provider
 from exp.exp_basic import Exp_Basic
-from models import Informer, Autoformer, Transformer, DLinear, Linear, NLinear, PatchTST, NewModel
+from models import Informer, Autoformer, Transformer, DLinear, Linear, NLinear, PatchTST, SegRNN, SparseTSF
 from utils.tools import EarlyStopping, adjust_learning_rate, visual, test_params_flop
 from utils.metrics import metric
 
@@ -32,7 +32,7 @@ class Exp_Main(Exp_Basic):
             'NLinear': NLinear,
             'Linear': Linear,
             'PatchTST': PatchTST,
-            'NewModel': NewModel,
+            'NewSegRNN': SegRNN,
         }
         model = model_dict[self.args.model].Model(self.args).float()
 
@@ -235,6 +235,7 @@ class Exp_Main(Exp_Basic):
         self.model.eval()
         with torch.no_grad():
             for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in enumerate(test_loader):
+                print(type(batch_x))
                 batch_x = batch_x.float().to(self.device)
                 batch_y = batch_y.float().to(self.device)
 
@@ -263,6 +264,7 @@ class Exp_Main(Exp_Basic):
 
                         else:
                             outputs = self.model(batch_x, batch_x_mark, dec_inp, batch_y_mark)
+                print("OUT:", outputs.shape)
 
                 f_dim = -1 if self.args.features == 'MS' else 0
                 # print(outputs.shape,batch_y.shape)
@@ -294,6 +296,8 @@ class Exp_Main(Exp_Basic):
         trues = trues.reshape(-1, trues.shape[-2], trues.shape[-1])
         inputx = inputx.reshape(-1, inputx.shape[-2], inputx.shape[-1])
 
+        print("PRED", preds.shape)
+
         # result save
         folder_path = './results/' + setting + '/'
         if not os.path.exists(folder_path):
@@ -308,9 +312,10 @@ class Exp_Main(Exp_Basic):
         f.write('\n')
         f.close()
 
+        print(mse)
         # np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe,rse, corr]))
         np.save(folder_path + 'pred.npy', preds)
-        # np.save(folder_path + 'true.npy', trues)
+        np.save(folder_path + 'true.npy', trues)
         # np.save(folder_path + 'x.npy', inputx)
         return
 
