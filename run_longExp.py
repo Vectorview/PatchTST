@@ -43,6 +43,12 @@ if __name__ == '__main__':
     parser.add_argument('--win_len', type=int, default=48, help='windows length')
     parser.add_argument('--channel_id', type=int, default=1, help='Whether to enable channel position encoding')
 
+    #PatchMixer
+    parser.add_argument('--mixer_kernel_size', type=int, default=8, help='patchmixer-kernel')
+    # parser.add_argument('--a', type=int, default=1, help='degree of patches aggregation, limited to 1-N, other value for N')
+    parser.add_argument('--loss_flag', type=int, default=2, help='loss function flag, 0 for MSE, 1 for MAE, 2 for both of MSE & MAE, 3 for SmoothL1loss')
+
+
     # DLinear
     #parser.add_argument('--individual', action='store_true', default=False, help='DLinear: a linear layer for each variate(channel) individually')
 

@@ -5,17 +5,34 @@ import argparse
 import torch
 import os
 
+from models import PatchTST
 config = {
         "seq_len": 96,
         "pred_len": 96,
         "enc_in": 7, 
         "period_len": 12,
+        "d_model": 128,
+        "e_layers": 3,
+        "n_heads": 4,
+        "d_ff": 128,
+        "dropout": 0.1,
+        "fc_dropout": 0.3,
+        "head_dropout": 0.1,
+        "individual": 0,
+        "patch_len": 24,
+        "stride": 16,
+        "padding_patch": "end",
+        "revin": 1,
+        "affine": 0,
+        "subtract_last": 0,
+        "decomposition": 0,
+        "kernel_size": 25,
 }
 args = argparse.Namespace(**config)
 
-model = SparseTSF.Model(args).float()
+model = PatchTST.Model(args).float()
 
-setting = "NewModel_period_12_epoch15_lr0.002_bs128_itr1_stride16_plen24_hdo0.1_do0.1_dff128_dm16_heads4_elay3_enc7/"
+setting = "PatchTST_period_4_epoch5_lr0.001_bs128_itr1_stride16_plen24_hdo0.1_do0.3_dff128_dm128_heads4_elay3_enc7"
 path = f"checkpoints/{setting}/checkpoint.pth"
 model.load_state_dict(torch.load(path))
 model.eval()

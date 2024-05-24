@@ -9,7 +9,7 @@ seq_len=96
 pred_len=96
 label_len=12
 
-model_name=PatchTST
+model_name=NewPatchMixer
 
 root_path_name=./dataset/
 data_path_name=ETTh1.csv
@@ -26,6 +26,12 @@ random_seed=2021
 #
 # PatchTST_period_12_epoch15_lr0.02_bs64_itr1_stride8_plen24_hdo0.1_do0.1_dff64_dm16_heads4_elay3_enc7
 #  0.3411906
+#
+#  PatchTST_period_4_epoch5_lr0.001_bs128_itr1_stride16_plen24_hdo0.1_do0.3_dff128_dm128_heads4_elay3_enc7
+# mse:6.268238544464111, mae:1.443004846572876, rse:0.27215826511383057
+
+# PatchTST_period_4_epoch10_lr0.001_bs128_itr1_stride16_plen24_hdo0.1_do0.3_dff128_dm128_heads4_elay3_enc7  
+# mse:6.139866828918457, mae:1.4394910335540771, rse:0.26935699582099915
 
 
 # NewModel_period_12_epoch15_lr0.02_bs128_itr1_stride16_plen48_hdo0.1_do0.1_dff128_dm16_heads4_elay3_enc7
@@ -41,20 +47,25 @@ random_seed=2021
 
 # NewSegRNN_period_4_epoch15_lr0.001_bs128_itr1_stride16_plen24_hdo0.1_do0.5_dff128_dm128_heads4_elay3_enc7
 #  0.36094161
+#
+#
+#  NewPatchMixer_period_4_epoch10_lr0.01_bs128_itr1_stride16_plen24_hdo0.1_do0.2_dff128_dm128_heads4_elay3_enc7
+#  5.63094091
 
 
 
-for train_epochs in 3; do
-  for learning_rate in 0.001; do
-    for batch_size in 128; do
+
+for train_epochs in 15; do
+  for learning_rate in 0.02 0.01; do
+    for batch_size in 128 256; do
       for itr in 1; do
         for stride in 16; do
-          for patch_len in 24; do
+          for patch_len in 16; do
             for head_dropout in 0.1; do
               for fc_dropout in 0.1; do
-                for dropout in 0.3; do
-                  for d_ff in 128; do
-                    for d_model in 128; do
+                for dropout in 0.2; do
+                  for d_ff in 256 128 64; do
+                    for d_model in 256 128 64; do
                       for n_heads in 4; do
                         for e_layers in 3; do
                           for enc_in in 7; do
